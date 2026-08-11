@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LHS 475b — What a Featureless JWST Spectrum Actually Tells You</title>
+<meta name="description" content="Report on LHS 475b: real JWST NIRSpec transmission spectrum statistically compared against real candidate atmosphere models, quantifying which are ruled out.">
+<style>
+:root {
+  --bg:#f4f6f8; --panel:#ffffff; --line:#dde3ea; --text:#161a1f; --muted:#5c6672;
+  --accent:#1f4e79; --accent-soft:#e2ecf5; --sans:"Inter","Segoe UI",system-ui,Arial,sans-serif;
+  --mono:"IBM Plex Mono","Roboto Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#0d1116; --panel:#151b22; --line:#26303a; --text:#e8edf2; --muted:#93a1b0; --accent:#5b9bd5; --accent-soft:#182633; }
+}
+* { box-sizing: border-box; }
+html,body { margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); }
+.wrap { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+header.hero { border-bottom: 1px solid var(--line); padding-bottom: 2rem; margin-bottom: 2.5rem; }
+.kicker { color: var(--accent); font: 600 .75rem var(--mono); letter-spacing: .12em; text-transform: uppercase; margin: 0 0 .8rem; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0 0 .6rem; letter-spacing: -.02em; }
+.tagline { color: var(--muted); font-size: 1.1rem; max-width: 680px; margin: 0; }
+.badges { display:flex; gap:.5rem; margin-top: 1.2rem; flex-wrap: wrap; }
+.badge { font: 600 .68rem var(--mono); background: var(--accent-soft); color: var(--accent); padding: .3rem .6rem; border-radius: 5px; }
+section { margin: 2.6rem 0; }
+h2 { font-size: 1.4rem; margin: 0 0 1rem; letter-spacing: -.01em; }
+p { line-height: 1.7; }
+.muted { color: var(--muted); }
+table.params { width: 100%; border-collapse: collapse; font-size: .92rem; }
+table.params th, table.params td { text-align: left; padding: .6rem .7rem; border-bottom: 1px solid var(--line); }
+table.params th { color: var(--muted); font-weight: 600; width: 45%; }
+.figure { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 1rem; margin: 1.2rem 0; }
+.figure img { width: 100%; height: auto; border-radius: 6px; }
+.figure figcaption { color: var(--muted); font-size: .85rem; margin-top: .6rem; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: .8rem; margin: 1.2rem 0; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; }
+.stat span { display:block; color: var(--muted); font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .3rem; }
+.stat strong { font: 600 1.1rem var(--mono); color: var(--accent); }
+ol.refs { padding-left: 1.2rem; color: var(--muted); font-size: .92rem; line-height: 1.7; }
+ol.refs li { margin-bottom: .5rem; }
+a { color: var(--accent); }
+footer { border-top: 1px solid var(--line); margin-top: 3rem; padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; color: var(--muted); font-size: .85rem; }
+footer nav { display: flex; gap: 1.2rem; }
+footer a { color: var(--muted); text-decoration: none; }
+footer a:hover { color: var(--accent); }
+.callout { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; border-radius: 6px; font-size: .93rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <p class="kicker">Exoplanet Atmosphere Report · JWST NIRSpec/G395H</p>
+    <h1>LHS 475b</h1>
+    <p class="tagline">An Earth-sized rocky planet interior to its M-dwarf's habitable zone, and one of JWST's first terrestrial-exoplanet targets. This report statistically tests the real, published transmission spectrum against real candidate atmosphere models — showing exactly which are ruled out and which remain possible.</p>
+    <div class="badges">
+      <span class="badge">Transit-discovered, 2023 (TESS + JWST validation)</span>
+      <span class="badge">Real NASA Exoplanet Archive parameters</span>
+      <span class="badge">Real JWST NIRSpec spectrum (Lustig-Yaeger & Fu et al. 2023)</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>The planet, in numbers</h2>
+    <p class="muted">Queried live from the NASA Exoplanet Archive TAP service (<code>pscomppars</code>).</p>
+    <table class="params">
+      <tr><th>Radius</th><td>0.991 Earth radii — essentially Earth-sized</td></tr>
+      <tr><th>Mass</th><td>0.941 Earth masses</td></tr>
+      <tr><th>Orbital period</th><td>2.029 days</td></tr>
+      <tr><th>Semi-major axis</th><td>0.0204 AU</td></tr>
+      <tr><th>Equilibrium temperature</th><td>586 K — warm, interior to the habitable zone</td></tr>
+      <tr><th>Host star</th><td>LHS 475, M3 dwarf, T<sub>eff</sub> = 3300 K, 0.279 R<sub>sun</sub>, 0.262 M<sub>sun</sub></td></tr>
+      <tr><th>Distance</th><td>12.48 parsecs (~40.7 light-years)</td></tr>
+      <tr><th>Discovery</th><td>2023, TESS transit photometry; independently validated with JWST</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Why a "featureless" spectrum is still a real, useful result</h2>
+    <p>A rocky planet's transmission spectrum shows wavelength-dependent absorption dips only if starlight is passing through a real, extended, molecule-bearing atmosphere during transit. A flat, feature-free spectrum is not a non-result — it actively rules out entire classes of atmosphere, the same way a flat line on a metal detector rules out large buried objects. JWST's precision (constraining features below 50 parts per million here) makes this a genuinely stringent test, something no previous facility could do for a planet this small.</p>
+    <p>Lustig-Yaeger &amp; Fu et al. (2023) used two real JWST NIRSpec/G395H transit observations to independently validate LHS 475b's existence and obtain its first transmission spectrum, finding no significant molecular features and using that flatness to rule out specific real candidate atmospheres.</p>
+  </section>
+
+  <section>
+    <h2>Real statistical test, quantified</h2>
+    <p>The left panel shows the real 56-point JWST spectrum with a fitted flat line; the right panel shows the reduced chi-squared of the real data against four real published candidate atmosphere models (PICASO/CHIMERA forward models, offset to the measured depth).</p>
+    <div class="figure">
+      <img src="figures/lhs475b_transmission_spectrum.png" alt="LHS 475b real JWST NIRSpec transmission spectrum and model comparison chi-squared bar chart">
+      <figcaption>Left: real data vs. an inverse-variance-weighted flat-line fit. Right: reduced chi-squared per real candidate model. Generated by <code>scripts/analyze_spectrum.py</code>.</figcaption>
+    </div>
+    <div class="stat-grid">
+      <div class="stat"><span>Flat-line fit</span><strong>χ²/dof = 0.92</strong></div>
+      <div class="stat"><span>Pure CH4 (methane)</span><strong>χ² = 2.30 — disfavored</strong></div>
+      <div class="stat"><span>1x-solar H2-rich</span><strong>χ² = 206 — strongly disfavored</strong></div>
+      <div class="stat"><span>CO2 / Venus-like</span><strong>χ² ≈ 1.0-1.1 — consistent</strong></div>
+    </div>
+    <p class="callout">The real spectrum is statistically indistinguishable from a flat line (reduced chi-squared of 0.92 across 56 points) — genuine evidence against thick, spectrally active atmospheres. A primordial hydrogen-dominated envelope is decisively ruled out (chi-squared of 206), and a cloudless pure-methane atmosphere is disfavored, while denser, higher-mean-molecular-weight options like a CO2-dominated, Venus-like atmosphere remain statistically consistent with the real data — exactly the real published conclusion: the data cannot yet distinguish a thick CO2 atmosphere, a thin Mars-like one, or bare rock.</p>
+  </section>
+
+  <section>
+    <h2>How this data was obtained, and an honest limitation</h2>
+    <p>System parameters were queried live from the NASA Exoplanet Archive TAP service. The real transmission spectrum and atmosphere models come from Zenodo record <a href="https://zenodo.org/records/7925111">7925111</a> (Lustig-Yaeger &amp; Fu et al. 2023) — see <a href="data/">data/</a> for the exact files as downloaded and <a href="scripts/analyze_spectrum.py">scripts/analyze_spectrum.py</a> for the chi-squared analysis, runnable yourself with <code>python scripts/analyze_spectrum.py</code>. One limitation stated plainly: this repo compares only 4 of the paper's ~12 real candidate models (a representative disfavored pair and a representative consistent pair), and a "consistent" chi-squared here means the data cannot rule the model out — not that it confirms it; a genuinely featureless spectrum is equally consistent with several very different atmospheres, or none at all.</p>
+  </section>
+
+  <section>
+    <h2>References</h2>
+    <ol class="refs">
+      <li>Lustig-Yaeger, J. &amp; Fu, G. et al., 2023. A JWST transmission spectrum of the nearby Earth-sized exoplanet LHS 475 b. <em>Nature Astronomy</em>, 7, pp.1317-1328.</li>
+      <li>Ment, K. et al., 2023. LHS 475 b: A Venus-sized Planet Orbiting a Nearby M Dwarf. <em>The Astronomical Journal</em> (submitted), arXiv:2304.01920.</li>
+      <li>NASA Exoplanet Archive, <a href="https://exoplanetarchive.ipac.caltech.edu/">exoplanetarchive.ipac.caltech.edu</a> — system parameters, queried live via TAP.</li>
+      <li>Zenodo record 7925111, <a href="https://zenodo.org/records/7925111">zenodo.org/records/7925111</a> — real reduced JWST spectrum and atmosphere models.</li>
+    </ol>
+  </section>
+
+  <footer>
+    <span>Biswajit Jana · Exoplanet Atmosphere Report Series</span>
+    <nav>
+      <a href="https://biswajit1999.github.io/Biswajit_Jana.github.io/" target="_blank" rel="noopener">Portfolio</a>
+      <a href="https://github.com/Biswajit1999" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/biswajit-jana-27011a151/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://orcid.org/0009-0002-2411-1891" target="_blank" rel="noopener">ORCID</a>
+    </nav>
+  </footer>
+</div>
+</body>
+</html>

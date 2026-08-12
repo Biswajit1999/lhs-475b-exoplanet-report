@@ -1,27 +1,28 @@
 # LHS 475b — Exoplanet Atmosphere Report
 
 An Earth-sized rocky planet interior to its M-dwarf's habitable zone,
-and one of JWST's first terrestrial-exoplanet targets. This repo
-statistically tests the real, published transmission spectrum against
-real candidate atmosphere models — quantifying exactly which are ruled
-out and which remain possible.
+and one of JWST's first terrestrial-exoplanet targets. This repo tests
+the published transmission spectrum against candidate atmosphere
+models with a reduced-chi-squared comparison, and is explicit about
+what that comparison can and can't rule out.
 
 **[Open the full report](index.html)** (open locally in a browser, or serve
 with `python -m http.server` from this directory).
 
-## What's real here
+## Data sources
 
-- **System parameters** — queried live from the NASA Exoplanet Archive TAP
+- **System parameters** — from the NASA Exoplanet Archive TAP
   service (`pscomppars`).
-- **JWST transmission spectrum and atmosphere models** — five real files
+- **JWST transmission spectrum and atmosphere models** — five files
   from Zenodo record [7925111](https://zenodo.org/records/7925111)
-  (Lustig-Yaeger & Fu et al. 2023, *Nature Astronomy*): the real 56-point
+  (Lustig-Yaeger & Fu et al. 2023, *Nature Astronomy*): the 56-point
   co-added NIRSpec/G395H spectrum (FIREFLy pipeline reduction), plus four
-  real published forward-model spectra (pure methane, 1x-solar
-  hydrogen-rich, clear Venus-like CO2, pure CO2).
+  published forward-model spectra (pure methane, 1x-solar
+  hydrogen-rich, clear Venus-like CO2, pure CO2), each already offset
+  to the measured depth by the upstream Zenodo release.
 - **Analysis** — `scripts/analyze_spectrum.py` fits a flat (featureless)
-  line to the real spectrum and computes the reduced chi-squared of the
-  real data against each real candidate model. Run it yourself:
+  line to the spectrum and computes the reduced chi-squared of the
+  data against each candidate model. Run it yourself:
 
   ```bash
   pip install -r requirements.txt
@@ -32,34 +33,41 @@ with `python -m http.server` from this directory).
 
 ```text
 index.html              the report webpage
-data/                    real JWST NIRSpec spectrum + atmosphere models (Zenodo 7925111)
-scripts/analyze_spectrum.py   real flat-line and model chi-squared analysis
+data/                    JWST NIRSpec spectrum + atmosphere models (Zenodo 7925111)
+scripts/analyze_spectrum.py   flat-line and model reduced-chi-squared analysis
 figures/                 generated plot + summary_statistics.csv
 ```
 
-## Key finding this repo shows directly
+## What the numbers show
 
-The real spectrum is statistically indistinguishable from a flat line
-(reduced chi-squared of **0.92** across 56 real wavelength points). A
-primordial hydrogen-dominated envelope is decisively ruled out
-(chi-squared of **206**), and a cloudless pure-methane atmosphere is
-disfavored (chi-squared of **2.3**), while denser, higher-mean-molecular-
-weight options like a CO2-dominated, Venus-like atmosphere remain
-statistically consistent with the real data (chi-squared ≈ **1.0-1.1**)
-— matching the real published conclusion that the data cannot yet
-distinguish a thick CO2 atmosphere, a thin Mars-like one, or bare rock.
+The spectrum is statistically indistinguishable from a flat line
+(reduced chi-squared of **0.92** across 56 wavelength points). A
+primordial hydrogen-dominated envelope is strongly disfavored
+(reduced chi-squared of **206**), and a cloudless pure-methane atmosphere
+is disfavored too (reduced chi-squared of **2.3**), while denser,
+higher-mean-molecular-weight options like a CO2-dominated, Venus-like
+atmosphere remain statistically consistent with the data (reduced
+chi-squared ≈ **1.0-1.1**) — matching the published conclusion that the
+data cannot yet distinguish a thick CO2 atmosphere, a thin Mars-like
+one, or bare rock.
 
-## Honest limitation
+## Limitations
 
-This repo compares only 4 of the paper's ~12 real candidate models (a
-representative disfavored pair and a representative consistent pair).
-A "consistent" chi-squared means the data cannot rule the model out —
-not that it confirms it; a genuinely featureless spectrum is equally
-consistent with several very different atmospheres, or none at all.
-Also worth noting: the real data file reports transit depth in percent
-while the model files are fractional — this repo's script converts both
-to the same scale explicitly (see the comment in
-`scripts/analyze_spectrum.py`) rather than silently assuming a match.
+The reduced-chi-squared-above-2 cutoff used to call a model
+"disfavored" is a convenient heuristic, not a calibrated
+model-rejection threshold; a rigorous comparison would report the
+actual chi-squared, degrees of freedom, and a p-value (or a Bayesian
+model comparison) for each candidate rather than a single fixed
+cutoff. This repo also compares only 4 of the paper's roughly 12
+candidate models (a representative disfavored pair and a
+representative consistent pair). A "consistent" reduced chi-squared
+means the data cannot rule the model out — not that it confirms it; a
+genuinely featureless spectrum is equally consistent with several very
+different atmospheres, or none at all. Separately: the raw data file
+reports transit depth in percent while the model files are fractional
+— this repo's script converts both to the same scale explicitly (see
+the comment in `scripts/analyze_spectrum.py`) rather than silently
+assuming a match.
 
 ## References
 

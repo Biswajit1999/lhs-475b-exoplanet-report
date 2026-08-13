@@ -1,8 +1,19 @@
 quantity,value,unit
 n_wavelength_points,56,count
 flat_line_depth,0.001063,(Rp/Rs)^2
+flat_line_chi2,50.70,dimensionless
+flat_line_dof,55,count
 flat_line_reduced_chi2,0.92,dimensionless
+flat_line_p_value,0.640,"survival function, chi2.sf(chi2, dof)"
+chi2_Pure CH4 (methane),128.69,dof=56
 reduced_chi2_Pure CH4 (methane),2.30,dimensionless
+p_value_Pure CH4 (methane),1.19e-07,"survival function, chi2.sf(chi2, dof)"
+chi2_1x-solar H2-rich,11541.08,dof=56
 reduced_chi2_1x-solar H2-rich,206.09,dimensionless
+p_value_1x-solar H2-rich,0,"survival function, chi2.sf(chi2, dof)"
+chi2_Clear Venus-like (CO2),62.90,dof=56
 reduced_chi2_Clear Venus-like (CO2),1.12,dimensionless
+p_value_Clear Venus-like (CO2),0.245,"survival function, chi2.sf(chi2, dof)"
+chi2_Pure CO2,57.58,dof=56
 reduced_chi2_Pure CO2,1.03,dimensionless
+p_value_Pure CO2,0.416,"survival function, chi2.sf(chi2, dof)"

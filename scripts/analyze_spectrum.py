@@ -19,6 +19,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import scienceplots  # noqa: F401 (registers 'science' style)
 import numpy as np
+from scipy.stats import chi2 as chi2_dist
 
 plt.style.use(["science", "no-latex"])
 
@@ -61,19 +62,29 @@ def main() -> None:
     n_points = len(wave)
 
     # Flat-line (featureless) fit: inverse-variance-weighted mean depth.
+    # One parameter (the flat level) is fit locally, so dof = N - 1.
     weights = 1.0 / depth_err**2
     flat_depth = np.sum(depth * weights) / np.sum(weights)
     flat_chi2 = np.sum(((depth - flat_depth) / depth_err) ** 2)
     flat_dof = n_points - 1
     flat_reduced_chi2 = flat_chi2 / flat_dof
+    flat_p_value = chi2_dist.sf(flat_chi2, flat_dof)
 
+    # Candidate-model comparisons: each model spectrum is fixed (no local
+    # free parameter fitted here -- the models were already offset to the
+    # measured depth upstream, in the original data release), so dof = N,
+    # not N-1. This assumes that upstream offset was not itself fit to
+    # this same data in a way that should reduce dof further; that
+    # provenance detail lives with the model files, not in this script.
     model_results = []
     for label, filename in MODELS.items():
         model = load_ecsv(DATA_DIR / filename, ncols=2)
         model_depth = model[:, 1]
         chi2 = np.sum(((depth - model_depth) / depth_err) ** 2)
-        reduced_chi2 = chi2 / n_points
-        model_results.append({"label": label, "chi2": chi2, "reduced_chi2": reduced_chi2})
+        dof = n_points
+        reduced_chi2 = chi2 / dof
+        p_value = chi2_dist.sf(chi2, dof)
+        model_results.append({"label": label, "chi2": chi2, "dof": dof, "reduced_chi2": reduced_chi2, "p_value": p_value})
 
     summary_path = FIG_DIR / "summary_statistics.csv"
     with summary_path.open("w", newline="") as handle:
@@ -81,9 +92,14 @@ def main() -> None:
         writer.writerow(["quantity", "value", "unit"])
         writer.writerow(["n_wavelength_points", n_points, "count"])
         writer.writerow(["flat_line_depth", f"{flat_depth:.6f}", "(Rp/Rs)^2"])
+        writer.writerow(["flat_line_chi2", f"{flat_chi2:.2f}", "dimensionless"])
+        writer.writerow(["flat_line_dof", flat_dof, "count"])
         writer.writerow(["flat_line_reduced_chi2", f"{flat_reduced_chi2:.2f}", "dimensionless"])
+        writer.writerow(["flat_line_p_value", f"{flat_p_value:.3f}", "survival function, chi2.sf(chi2, dof)"])
         for r in model_results:
+            writer.writerow([f"chi2_{r['label']}", f"{r['chi2']:.2f}", f"dof={r['dof']}"])
             writer.writerow([f"reduced_chi2_{r['label']}", f"{r['reduced_chi2']:.2f}", "dimensionless"])
+            writer.writerow([f"p_value_{r['label']}", f"{r['p_value']:.3g}", "survival function, chi2.sf(chi2, dof)"])
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.6), gridspec_kw={"width_ratios": [1.3, 1]})
 
@@ -114,10 +130,10 @@ def main() -> None:
 
     print(f"Wrote {summary_path}")
     print(f"Wrote {FIG_DIR / 'lhs475b_transmission_spectrum.png'}")
-    print(f"Flat-line depth: {flat_depth:.6f}, reduced chi2 = {flat_reduced_chi2:.2f} ({n_points} points)")
+    print(f"Flat-line depth: {flat_depth:.6f}, chi2={flat_chi2:.2f}, dof={flat_dof}, reduced chi2={flat_reduced_chi2:.2f}, p={flat_p_value:.3f}")
     for r in model_results:
         verdict = "DISFAVORED" if r["reduced_chi2"] > 2 else "consistent"
-        print(f"  {r['label']}: reduced chi2 = {r['reduced_chi2']:.2f} -> {verdict}")
+        print(f"  {r['label']}: chi2={r['chi2']:.2f}, dof={r['dof']}, reduced chi2={r['reduced_chi2']:.2f}, p={r['p_value']:.3g} -> {verdict} (reduced-chi2>2 heuristic, not a calibrated rejection threshold)")
 
 
 if __name__ == "__main__":

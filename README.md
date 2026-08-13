@@ -3,8 +3,9 @@
 An Earth-sized rocky planet interior to its M-dwarf's habitable zone,
 and one of JWST's first terrestrial-exoplanet targets. This repo tests
 the published transmission spectrum against candidate atmosphere
-models with a reduced-chi-squared comparison, and is explicit about
-what that comparison can and can't rule out.
+models with an explicit chi-squared, degrees-of-freedom, and p-value
+comparison, and is clear about what that comparison can and can't
+rule out.
 
 **[Open the full report](index.html)** (open locally in a browser, or serve
 with `python -m http.server` from this directory).
@@ -21,8 +22,10 @@ with `python -m http.server` from this directory).
   hydrogen-rich, clear Venus-like CO2, pure CO2), each already offset
   to the measured depth by the upstream Zenodo release.
 - **Analysis** — `scripts/analyze_spectrum.py` fits a flat (featureless)
-  line to the spectrum and computes the reduced chi-squared of the
-  data against each candidate model. Run it yourself:
+  line to the spectrum and computes chi-squared, degrees of freedom,
+  reduced chi-squared, and a survival-function p-value
+  (`scipy.stats.chi2.sf`) of the data against each candidate model.
+  Run it yourself:
 
   ```bash
   pip install -r requirements.txt
@@ -40,27 +43,33 @@ figures/                 generated plot + summary_statistics.csv
 
 ## What the numbers show
 
+| Test | χ² / dof | reduced χ² | p-value |
+|---|---|---|---|
+| Flat line | 50.70 / 55 | 0.92 | 0.640 |
+| Pure CH4 (methane) | 128.69 / 56 | 2.30 | 1.2×10⁻⁷ — disfavored |
+| 1x-solar H2-rich | 11541.08 / 56 | 206.1 | <10⁻³⁰⁰ — decisively disfavored |
+| Clear Venus-like (CO2) | 62.90 / 56 | 1.12 | 0.245 — consistent |
+| Pure CO2 | 57.58 / 56 | 1.03 | 0.416 — consistent |
+
 The spectrum is statistically indistinguishable from a flat line
-(reduced chi-squared of **0.92** across 56 wavelength points). A
-primordial hydrogen-dominated envelope is strongly disfavored
-(reduced chi-squared of **206**), and a cloudless pure-methane atmosphere
-is disfavored too (reduced chi-squared of **2.3**), while denser,
-higher-mean-molecular-weight options like a CO2-dominated, Venus-like
-atmosphere remain statistically consistent with the data (reduced
-chi-squared ≈ **1.0-1.1**) — matching the published conclusion that the
-data cannot yet distinguish a thick CO2 atmosphere, a thin Mars-like
-one, or bare rock.
+(chi-squared of 50.70 over 55 degrees of freedom, p = 0.640). A
+primordial hydrogen-dominated envelope is decisively rejected, and a
+cloudless pure-methane atmosphere is disfavored at high confidence
+(p = 1.2×10⁻⁷), while denser, higher-mean-molecular-weight options
+like a CO2-dominated, Venus-like atmosphere remain statistically
+consistent with the data (p = 0.245 and 0.416) — matching the
+published conclusion that the data cannot yet distinguish a thick CO2
+atmosphere, a thin Mars-like one, or bare rock.
 
 ## Limitations
 
-The reduced-chi-squared-above-2 cutoff used to call a model
-"disfavored" is a convenient heuristic, not a calibrated
-model-rejection threshold; a rigorous comparison would report the
-actual chi-squared, degrees of freedom, and a p-value (or a Bayesian
-model comparison) for each candidate rather than a single fixed
-cutoff. This repo also compares only 4 of the paper's roughly 12
-candidate models (a representative disfavored pair and a
-representative consistent pair). A "consistent" reduced chi-squared
+The model-comparison p-values assume each candidate model is fixed
+with no locally fit free parameters — the models were already offset
+to the measured depth upstream, in the original Zenodo release — so
+dof = N for those comparisons, while the flat-line fit fits one free
+parameter locally and uses dof = N-1. This repo also compares only 4
+of the paper's roughly 12 candidate models (a representative disfavored
+pair and a representative consistent pair). A "consistent" p-value
 means the data cannot rule the model out — not that it confirms it; a
 genuinely featureless spectrum is equally consistent with several very
 different atmospheres, or none at all. Separately: the raw data file

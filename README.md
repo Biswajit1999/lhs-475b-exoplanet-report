@@ -39,6 +39,21 @@ index.html              the report webpage
 data/                    JWST NIRSpec spectrum + atmosphere models (Zenodo 7925111)
 scripts/analyze_spectrum.py   flat-line and model reduced-chi-squared analysis
 figures/                 generated plot + summary_statistics.csv
+tests/                   unit tests + a regression check against the real data
+```
+
+## Tests
+
+`tests/test_analysis.py` checks the ECSV loader and the chi-squared/
+p-value formula against a known analytic case, and reruns the full
+pipeline on the real downloaded spectrum and models, verifying it
+still reproduces the documented p-values — including that the
+hydrogen-rich and methane models stay disfavored while the CO2 models
+stay statistically consistent. Runs automatically on every push via
+GitHub Actions; run locally with:
+
+```bash
+pytest tests/ -v
 ```
 
 ## What the numbers show

@@ -45,6 +45,9 @@ footer nav { display: flex; gap: 1.2rem; }
 footer a { color: var(--muted); text-decoration: none; }
 footer a:hover { color: var(--accent); }
 .callout { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; border-radius: 6px; font-size: .93rem; }
+.hero-banner { margin: 1.5rem 0 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
+.hero-banner img { width: 100%; height: auto; max-height: 440px; object-fit: cover; display: block; }
+.ai-credit { color: var(--muted); font-size: .72rem; font-style: italic; margin: .5rem 0 0; }
 </style>
 </head>
 <body>
@@ -59,6 +62,11 @@ footer a:hover { color: var(--accent); }
       <span class="badge">Real JWST NIRSpec spectrum (Lustig-Yaeger & Fu et al. 2023)</span>
     </div>
   </header>
+
+  <div class="hero-banner">
+    <img src="images/hero.png" alt="Artist's concept of the Earth-sized rocky exoplanet LHS 475 b">
+  </div>
+  <p class="ai-credit">AI-generated artist's concept of LHS 475b — not a real photograph. All data and figures in this report come from actual JWST NIRSpec observations (see below).</p>
 
   <section>
     <h2>The planet, in numbers</h2>
@@ -79,6 +87,10 @@ footer a:hover { color: var(--accent); }
     <h2>Why a "featureless" spectrum is still a real, useful result</h2>
     <p>A rocky planet's transmission spectrum shows wavelength-dependent absorption dips only if starlight is passing through a real, extended, molecule-bearing atmosphere during transit. A flat, feature-free spectrum is not a non-result — it actively rules out entire classes of atmosphere, the same way a flat line on a metal detector rules out large buried objects. JWST's precision (constraining features below 50 parts per million here) makes this a genuinely stringent test, something no previous facility could do for a planet this small.</p>
     <p>Lustig-Yaeger &amp; Fu et al. (2023) used two real JWST NIRSpec/G395H transit observations to independently validate LHS 475b's existence and obtain its first transmission spectrum, finding no significant molecular features and using that flatness to rule out specific real candidate atmospheres.</p>
+    <div class="figure">
+      <img src="images/3d-render.png" alt="Close-up 3D-rendered concept of LHS 475 b's rocky surface">
+      <p class="ai-credit">AI-generated 3D-render-style concept — one of several atmosphere scenarios still statistically consistent with the flat spectrum above, not a confirmed depiction.</p>
+    </div>
   </section>
 
   <section>
@@ -102,6 +114,10 @@ footer a:hover { color: var(--accent); }
   <section>
     <h2>Data and method notes</h2>
     <p>System parameters were queried live from the NASA Exoplanet Archive TAP service. The transmission spectrum and atmosphere models come from Zenodo record <a href="https://zenodo.org/records/7925111">7925111</a> (Lustig-Yaeger &amp; Fu et al. 2023) — see <a href="data/">data/</a> for the exact files as downloaded and <a href="scripts/analyze_spectrum.py">scripts/analyze_spectrum.py</a> for the chi-squared analysis (<code>python scripts/analyze_spectrum.py</code> to rerun it). The webpage described the models as "offset to the measured depth" — that offset is already baked into the upstream Zenodo model files this repo uses, not something this script fits itself, and is documented here rather than left implicit. This repo also compares only 4 of the paper's roughly 12 candidate models (a representative disfavored pair and a representative consistent pair), and a "consistent" p-value here means the data cannot rule the model out — not that it confirms it; a genuinely featureless spectrum is equally consistent with several very different atmospheres, or none at all.</p>
+    <div class="figure">
+      <img src="images/instrument.png" alt="AI-generated illustration of the James Webb Space Telescope">
+      <p class="ai-credit">AI-generated illustration of the James Webb Space Telescope, whose NIRSpec instrument took the real spectrum used in this report. Not an official mission photograph — see <a href="https://www.jwst.nasa.gov/">NASA/JWST</a> for real imagery.</p>
+    </div>
   </section>
 
   <section>

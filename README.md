@@ -1,5 +1,9 @@
 # LHS 475b — Exoplanet Atmosphere Report
 
+<img src="images/thumbnail.png" alt="Artist's concept of LHS 475b" width="360">
+
+*AI-generated artist's concept — not a real photograph. See the report for actual JWST NIRSpec data.*
+
 An Earth-sized rocky planet interior to its M-dwarf's habitable zone,
 and one of JWST's first terrestrial-exoplanet targets. This repo tests
 the published transmission spectrum against candidate atmosphere

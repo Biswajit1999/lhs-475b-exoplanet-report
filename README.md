@@ -1,8 +1,10 @@
 # LHS 475b — Exoplanet Atmosphere Report
 
-<img src="images/thumbnail.png" alt="Artist's concept of LHS 475b" width="360">
+<p align="center">
+  <img src="images/thumbnail.png" alt="Artist's concept of LHS 475b" width="360">
+</p>
 
-*AI-generated artist's concept — not a real photograph. See the report for actual JWST NIRSpec data.*
+<p align="center"><em>AI-generated artist's concept — not a real photograph. See the report for actual JWST NIRSpec data.</em></p>
 
 An Earth-sized rocky planet interior to its M-dwarf's habitable zone,
 and one of JWST's first terrestrial-exoplanet targets. This repo tests
@@ -11,8 +13,7 @@ models with an explicit chi-squared, degrees-of-freedom, and p-value
 comparison, and is clear about what that comparison can and can't
 rule out.
 
-**[Open the full report](index.html)** (open locally in a browser, or serve
-with `python -m http.server` from this directory).
+**[Open the full report](https://biswajit1999.github.io/lhs-475b-exoplanet-report/)** — the live GitHub Pages version. You can also open `index.html` locally in a browser, or serve it with `python -m http.server` from this directory.
 
 ## Data sources
 

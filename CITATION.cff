@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this analysis or its code, please cite the repository and its archived data sources."
+title: "LHS 475 b JWST Atmosphere Constraints"
+type: software
+authors:
+  - family-names: Jana
+    given-names: Biswajit
+    orcid: https://orcid.org/0009-0002-2411-1891
+repository-code: https://github.com/Biswajit1999/lhs-475b-exoplanet-report
+url: https://biswajit1999.github.io/lhs-475b-exoplanet-report/
+license: MIT

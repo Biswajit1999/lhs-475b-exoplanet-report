@@ -1,0 +1,25 @@
+{
+  "record": "https://doi.org/10.5281/zenodo.7925111",
+  "archive": "LHS47b_Zenodo_Files.zip",
+  "archive_md5": "fe9d81e069fbef4787506fb78a389876",
+  "hash_method": "SHA-256 after CRLF-to-LF normalization",
+  "files": {
+    "nirspec_transmission_spectrum_LR.txt": "1018a6944f71c1756c8148a467ce9857eb4451c6b5ba6a23cd1315af50caa07d",
+    "models/lhs_475b_1000xsolar_model_ecsv.txt": "b2b37352dddc7b44fbee38fc8c8059c4787ecbb16f16f9510c7e0d2bdeed7707",
+    "models/lhs_475b_100xsolar_model_ecsv.txt": "6fa2035e6b5041673e8be48d9c29f0a12038709c5dc7b2bd9f8528a1c2fbb0ea",
+    "models/lhs_475b_10xsolar_model_ecsv.txt": "316d60d9cf0d04d96cfc700d86b09603c0ba27c8a73edf0ef3bb16ffd62755f0",
+    "models/lhs_475b_1xsolar_model_ecsv.txt": "b35a3150e8c2c6aa51234e3c9575b9c1fc0f0c6a9419603721843bc2816ad959",
+    "models/lhs_475b_ch4_model_ecsv.txt": "79386d3a985ff9adf79e9795c95ba4102d094a6a243ee609b6eba153719fa5b7",
+    "models/lhs_475b_clear_titanlike_model_ecsv.txt": "f662facb7843da7973873743917ef5142b202a01fb01868e3a7de5a918030834",
+    "models/lhs_475b_clear_venuslike_model_ecsv.txt": "7132cd40cfafbc81170d216690df62366419c185d3a40f0127e26c9f988718a2",
+    "models/lhs_475b_cloudy_venuslike_model_ecsv.txt": "585bac9de68b18e1b5d3dd7f0897afb76006f6c2ef99e8bdba088126f8031046",
+    "models/lhs_475b_co2_model_ecsv.txt": "8b15d21a7cb2dc8b68407cd193af8adc69af61d2f9f274f79a6662d3905e9a88",
+    "models/lhs_475b_earthlike_model_ecsv.txt": "5d899a64a996093e0f997a9378cfce026341b72d8dd67d9a81018a12d0e1d9ec",
+    "models/lhs_475b_h2o_model_ecsv.txt": "706adb25112c0d309b58f39a6b73ffb84246814ea04eaaf5caceaeb3470e9072",
+    "models/lhs_475b_hazy_titanlike_model_ecsv.txt": "3de807717f862339f1bff59669ddfcfb28975814b205062e0aba9f4a85f4d6f3",
+    "models/lhs_475b_marslike_model_ecsv.txt": "d8b95c27a2ad7749ff869d385b18df418fecd94e5a24f8207d75c5d495855e7d",
+    "pipeline_spectra/transit_spectrum_HR_eureka_ecsv.txt": "11157c4333b28602b7c8858c14fcae17df66688cb6857d65b86996b3cea4d239",
+    "pipeline_spectra/transit_spectrum_HR_firefly_ecsv.txt": "4baf2964d9bc9a8b31cd18649c3d4f3a4787e6b4c9be32ca2e9fecb6d8e0f5d1",
+    "pipeline_spectra/transit_spectrum_HR_tiberius_ecsv.txt": "8a991324e527400f0692bbec4e2ba16b4250bd8917e635c7cc24ba63de29db5b"
+  }
+}

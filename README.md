@@ -1,121 +1,94 @@
-# LHS 475b — Exoplanet Atmosphere Report
-<!-- RESEARCH-IDENTITY-START -->
-**Independent research report by [Biswajit Jana](https://biswajit1999.github.io/Biswajit_Jana.github.io/)** · [Live report](https://biswajit1999.github.io/lhs-475b-exoplanet-report/) · [ORCID](https://orcid.org/0009-0002-2411-1891) · [Complete research portfolio](https://biswajit1999.github.io/Biswajit_Jana.github.io/research/exoplanets/)
-<!-- RESEARCH-IDENTITY-END -->
+# LHS 475 b — JWST atmosphere constraints
 
+**Independent reproducibility report by [Biswajit Jana](https://biswajit1999.github.io/Biswajit_Jana.github.io/)** · [Live report](https://biswajit1999.github.io/lhs-475b-exoplanet-report/) · [ORCID](https://orcid.org/0009-0002-2411-1891)
 
+This repository reproduces and extends a focused part of the analysis behind
+the first JWST transmission spectrum of the Earth-sized planet LHS 475 b. It
+uses the complete public Zenodo model set and three independently developed
+reductions of the same two NIRSpec/G395H transits. The published paper remains
+the authoritative scientific interpretation.
 
+## Scientific question
 
+Which broad classes of atmosphere are incompatible with the observed spectral
+shape, and how sensitive is that conclusion to the reduction pipeline?
 
-<p align="center">
-  <img src="images/thumbnail.png" alt="Artist's concept of LHS 475b" width="360">
-</p>
+The 56-bin FIREFLy spectrum accepts a fitted constant: χ² = 50.70 for 55
+degrees of freedom (p = 0.640). This is a failure to reject a flat spectrum,
+not evidence that the planet is airless. The public products leave compact,
+high-mean-molecular-weight, cloudy, and no-atmosphere interpretations
+degenerate. Conversely, low-metallicity hydrogen-rich models have spectral
+structure far larger than the data permit.
 
-<p align="center"><em>AI-generated artist's concept — not a real photograph. See the report for actual JWST NIRSpec data.</em></p>
+## Analysis design
 
-An Earth-sized rocky planet interior to its M-dwarf's habitable zone,
-and one of JWST's first terrestrial-exoplanet targets. This repo tests
-the published transmission spectrum against candidate atmosphere
-models with an explicit chi-squared, degrees-of-freedom, and p-value
-comparison, and is clear about what that comparison can and can't
-rule out.
+All 13 released atmosphere scenarios are tested in two deliberately separate
+ways:
 
-**[Open the full report](https://biswajit1999.github.io/lhs-475b-exoplanet-report/)** — the live GitHub Pages version. You can also open `index.html` locally in a browser, or serve it with `python -m http.server` from this directory.
+1. **Supplied curve:** compares the data with the already offset curve in the
+   archive, without fitting a local parameter (dof = 56). This reproduces the
+   released representation but relies on the upstream offset convention.
+2. **Shape-only:** fits one vertical offset before comparing wavelength
+   structure (dof = 55). This makes the nuisance reference radius explicit.
 
-## Data sources
+The Eureka!, FIREFLy, and Tiberius high-resolution spectra are also
+inverse-variance rebinned to the low-resolution wavelength bins. These are
+different reductions of the same two visits, so their agreement measures
+pipeline sensitivity rather than independent repeatability. FIREFLy HR→LR is
+primarily a self-consistency check.
 
-- **System parameters** — from the NASA Exoplanet Archive TAP
-  service (`pscomppars`).
-- **JWST transmission spectrum and atmosphere models** — five files
-  from Zenodo record [7925111](https://zenodo.org/records/7925111)
-  (Lustig-Yaeger & Fu et al. 2023, *Nature Astronomy*): the 56-point
-  co-added NIRSpec/G395H spectrum (FIREFLy pipeline reduction), plus four
-  published forward-model spectra (pure methane, 1x-solar
-  hydrogen-rich, clear Venus-like CO2, pure CO2), each already offset
-  to the measured depth by the upstream Zenodo release.
-- **Analysis** — `scripts/analyze_spectrum.py` fits a flat (featureless)
-  line to the spectrum and computes chi-squared, degrees of freedom,
-  reduced chi-squared, and a survival-function p-value
-  (`scipy.stats.chi2.sf`) of the data against each candidate model.
-  Run it yourself:
+![Three-panel LHS 475 b evidence audit](figures/lhs475b_transmission_spectrum.png)
 
-  ```bash
-  pip install -r requirements.txt
-  python scripts/analyze_spectrum.py
-  ```
+Machine-readable results are in
+[`model_comparison.csv`](figures/model_comparison.csv),
+[`pipeline_comparison.csv`](figures/pipeline_comparison.csv), and
+[`analysis_summary.json`](figures/analysis_summary.json).
 
-## Repository structure
-
-```text
-index.html              the report webpage
-data/                    JWST NIRSpec spectrum + atmosphere models (Zenodo 7925111)
-scripts/analyze_spectrum.py   flat-line and model reduced-chi-squared analysis
-figures/                 generated plot + summary_statistics.csv
-tests/                   unit tests + a regression check against the real data
-```
-
-## Tests
-
-`tests/test_analysis.py` checks the ECSV loader and the chi-squared/
-p-value formula against a known analytic case, and reruns the full
-pipeline on the real downloaded spectrum and models, verifying it
-still reproduces the documented p-values — including that the
-hydrogen-rich and methane models stay disfavored while the CO2 models
-stay statistically consistent. Runs automatically on every push via
-GitHub Actions; run locally with:
+## Reproduce
 
 ```bash
-pytest tests/ -v
+python -m pip install -r requirements.txt
+python scripts/validate_sources.py
+python scripts/analyze_spectrum.py
+pytest -q
+ruff check .
 ```
 
-## What the numbers show
+`data/source_manifest.json` records normalized SHA-256 checksums for all 17
+copied products and the MD5 supplied for the original Zenodo archive. No
+numeric values in the source products were altered.
 
-| Test | χ² / dof | reduced χ² | p-value |
-|---|---|---|---|
-| Flat line | 50.70 / 55 | 0.92 | 0.640 |
-| Pure CH4 (methane) | 128.69 / 56 | 2.30 | 1.2×10⁻⁷ — disfavored |
-| 1x-solar H2-rich | 11541.08 / 56 | 206.1 | <10⁻³⁰⁰ — decisively disfavored |
-| Clear Venus-like (CO2) | 62.90 / 56 | 1.12 | 0.245 — consistent |
-| Pure CO2 | 57.58 / 56 | 1.03 | 0.416 — consistent |
+## Repository map
 
-The spectrum is statistically indistinguishable from a flat line
-(chi-squared of 50.70 over 55 degrees of freedom, p = 0.640). A
-primordial hydrogen-dominated envelope is decisively rejected, and a
-cloudless pure-methane atmosphere is disfavored at high confidence
-(p = 1.2×10⁻⁷), while denser, higher-mean-molecular-weight options
-like a CO2-dominated, Venus-like atmosphere remain statistically
-consistent with the data (p = 0.245 and 0.416) — matching the
-published conclusion that the data cannot yet distinguish a thick CO2
-atmosphere, a thin Mars-like one, or bare rock.
+```text
+data/models/                 13 released atmosphere curves
+data/pipeline_spectra/       Eureka!, FIREFLy, and Tiberius HR spectra
+data/source_manifest.json    file-level provenance checksums
+scripts/analyze_spectrum.py  reproducible statistics and figure
+scripts/validate_sources.py  source-integrity check
+figures/                     plot and machine-readable results
+tests/                       validation and numerical regression tests
+```
 
-## Limitations
+## Interpretation limits
 
-The model-comparison p-values assume each candidate model is fixed
-with no locally fit free parameters — the models were already offset
-to the measured depth upstream, in the original Zenodo release — so
-dof = N for those comparisons, while the flat-line fit fits one free
-parameter locally and uses dof = N-1. This repo also compares only 4
-of the paper's roughly 12 candidate models (a representative disfavored
-pair and a representative consistent pair). A "consistent" p-value
-means the data cannot rule the model out — not that it confirms it; a
-genuinely featureless spectrum is equally consistent with several very
-different atmospheres, or none at all. Separately: the raw data file
-reports transit depth in percent while the model files are fractional
-— this repo's script converts both to the same scale explicitly (see
-the comment in `scripts/analyze_spectrum.py`) rather than silently
-assuming a match.
+- A large goodness-of-fit p-value does not confirm an atmospheric scenario.
+- These curve checks are not a retrieval, Bayes-factor calculation, or
+  molecule detection test; they do not marginalize over correlated noise or
+  model parameters.
+- Rebinning does not make the three reductions statistically independent.
+- Elevated scatter in a rebinned product can reflect covariance or formal
+  error calibration and is not, by itself, evidence for an atmosphere.
+- The analysis tests the archived products, not raw detector exposures.
 
-## References
+## Data and references
 
-1. Lustig-Yaeger, J. & Fu, G. et al., 2023. A JWST transmission spectrum
-   of the nearby Earth-sized exoplanet LHS 475 b. *Nature Astronomy*, 7,
-   pp.1317-1328.
-2. Ment, K. et al., 2023. LHS 475 b: A Venus-sized Planet Orbiting a
-   Nearby M Dwarf. *The Astronomical Journal* (submitted),
-   arXiv:2304.01920.
-3. NASA Exoplanet Archive, <https://exoplanetarchive.ipac.caltech.edu/>.
-4. Zenodo record 7925111, <https://zenodo.org/records/7925111>.
+- Lustig-Yaeger, J., Fu, G. et al. (2023), “A JWST transmission spectrum
+  of the nearby Earth-sized exoplanet LHS 475 b,” *Nature Astronomy* 7,
+  1317–1328, [arXiv:2301.04191](https://arxiv.org/abs/2301.04191).
+- Public spectra and models: [Zenodo record 7925111](https://doi.org/10.5281/zenodo.7925111).
+- System context: [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/).
 
 ## Author
 
-Biswajit Jana — [Portfolio](https://biswajit1999.github.io/Biswajit_Jana.github.io/) · [GitHub](https://github.com/Biswajit1999) · [LinkedIn](https://www.linkedin.com/in/biswajit-jana-27011a151/) · [ORCID](https://orcid.org/0009-0002-2411-1891)
+Biswajit Jana — [Portfolio](https://biswajit1999.github.io/Biswajit_Jana.github.io/) · [GitHub](https://github.com/Biswajit1999) · [ORCID](https://orcid.org/0009-0002-2411-1891)

@@ -1,41 +1,58 @@
-"""Executable checks on the ECSV loader and the chi-squared/p-value
-formula, and a regression guard that the pipeline still reproduces the
-documented p-values (added specifically so the reduced-chi2>2 heuristic
-wasn't the only statistical statement in this repo) when run on the
-real downloaded spectrum and models."""
+"""Regression and validation tests for the published LHS 475 b products."""
 
 import csv
 
+import analyze_spectrum as analysis
 import numpy as np
-from scipy.stats import chi2 as chi2_dist
-import analyze_spectrum as spec
+import pytest
 
 
-def test_load_ecsv_returns_expected_shape():
-    spec_data = spec.load_ecsv(spec.DATA_DIR / "nirspec_transmission_spectrum_LR.txt", ncols=4)
-    assert spec_data.shape[0] == 56
-    assert spec_data.shape[1] == 4
+def test_lr_product_shape_and_units():
+    data = analysis.load_ecsv(analysis.DATA_DIR / "nirspec_transmission_spectrum_LR.txt", 4)
+    assert data.shape == (56, 4)
+    assert np.all(data[:, 3] > 0)
 
 
-def test_chi2_p_value_matches_known_case():
-    values = np.full(10, 5.0)
-    errors = np.full(10, 1.0)
-    weights = 1.0 / errors**2
-    flat = np.sum(values * weights) / np.sum(weights)
-    chi2 = np.sum(((values - flat) / errors) ** 2)
-    assert np.isclose(chi2, 0.0, atol=1e-10)
-    assert np.isclose(chi2_dist.sf(chi2, len(values) - 1), 1.0)
+def test_weighted_mean_rejects_invalid_uncertainty():
+    with pytest.raises(ValueError, match="positive"):
+        analysis.weighted_mean(np.array([1.0, 2.0]), np.array([0.1, 0.0]))
 
 
-def test_pipeline_reproduces_documented_pvalues():
-    spec.FIG_DIR.mkdir(exist_ok=True)
-    spec.main()
-    rows = {}
-    with (spec.FIG_DIR / "summary_statistics.csv").open() as f:
-        for row in csv.DictReader(f):
-            rows[row["quantity"]] = row["value"]
-    assert int(rows["n_wavelength_points"]) == 56
-    assert abs(float(rows["flat_line_chi2"]) - 50.70) < 0.1
-    assert abs(float(rows["flat_line_p_value"]) - 0.640) < 0.01
-    assert float(rows["p_value_Pure CO2"]) > 0.05  # consistent
-    assert float(rows["p_value_Pure CH4 (methane)"]) < 0.001  # disfavored
+def test_model_catalog_is_complete_and_regression_values_hold():
+    paths = sorted(analysis.MODEL_DIR.glob("*_model_ecsv.txt"))
+    assert len(paths) == 13
+    spectrum = analysis.load_ecsv(analysis.DATA_DIR / "nirspec_transmission_spectrum_LR.txt", 4)
+    depth, error = spectrum[:, 2] / 100, spectrum[:, 3] / 100
+    results = {}
+    for path in paths:
+        model = analysis.load_ecsv(path, 2)
+        results[analysis.model_name(path)] = analysis.compare_model(depth, error, model[:, 1])
+    assert results["1× solar H₂-rich"]["fixed_chi2"] == pytest.approx(11541.08, abs=0.02)
+    assert results["Pure CH₄"]["shape_chi2"] == pytest.approx(108.90, abs=0.02)
+    assert results["Mars-like"]["shape_chi2"] == pytest.approx(55.94, abs=0.02)
+    assert results["Mars-like"]["shape_dof"] == 55
+
+
+def test_rebin_and_pipeline_comparison_regression():
+    spectrum = analysis.load_ecsv(analysis.DATA_DIR / "nirspec_transmission_spectrum_LR.txt", 4)
+    depth, error = spectrum[:, 2] / 100, spectrum[:, 3] / 100
+    path = analysis.PIPELINE_DIR / "transit_spectrum_HR_tiberius_ecsv.txt"
+    product = analysis.load_ecsv(path, 5)
+    values, errors = analysis.rebin_hr_to_lr(
+        product[:, 1], product[:, 3], product[:, 4], spectrum[:, 0], spectrum[:, 1]
+    )
+    assert np.count_nonzero(np.isfinite(values)) == 56
+    result = analysis.compare_pipeline_shapes(depth, error, values, errors)
+    assert float(result["offset"]) * 1e6 == pytest.approx(37.48, abs=0.03)
+    assert float(result["shape_reduced_chi2"]) == pytest.approx(0.592, abs=0.002)
+
+
+def test_main_writes_machine_readable_products():
+    analysis.main()
+    with (analysis.FIG_DIR / "model_comparison.csv").open(encoding="utf-8") as handle:
+        models = list(csv.DictReader(handle))
+    with (analysis.FIG_DIR / "pipeline_comparison.csv").open(encoding="utf-8") as handle:
+        pipelines = list(csv.DictReader(handle))
+    assert len(models) == 13
+    assert {row["pipeline"] for row in pipelines} == {"Eureka", "Firefly", "Tiberius"}
+    assert (analysis.FIG_DIR / "analysis_summary.json").is_file()

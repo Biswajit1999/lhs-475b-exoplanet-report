@@ -16,7 +16,12 @@ def test_evidence_publication_is_current():
         check=False,
     ) if (ROOT / ".git").exists() else None
     option = "--check-committed" if snapshot and snapshot.returncode == 0 else "--check"
-    for script in ("scripts/evidence_catalog.py", "scripts/render_evidence_page.py"):
+    for script in (
+        "scripts/evidence_catalog.py",
+        "scripts/render_evidence_page.py",
+        "scripts/profile_evidence_tables.py",
+        "scripts/render_table_profiles.py",
+    ):
         result = subprocess.run(
             [sys.executable, script, option], cwd=ROOT, capture_output=True, text=True, check=False
         )

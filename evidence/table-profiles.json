@@ -1,0 +1,278 @@
+{
+  "schema": 1,
+  "project": "LHS 475 b — JWST atmosphere constraints",
+  "tables": [
+    {
+      "path": "figures/summary_statistics.csv",
+      "label": "Summary statistics",
+      "role": "Tables and numerical results",
+      "rows": 7,
+      "width_mismatches": 0,
+      "columns": [
+        {
+          "name": "quantity",
+          "blank": 0,
+          "text": 7,
+          "finite": 0,
+          "nonfinite": 0
+        },
+        {
+          "name": "value",
+          "blank": 0,
+          "text": 0,
+          "finite": 7,
+          "nonfinite": 0,
+          "minimum": 4.321995311377846e-06,
+          "maximum": 56.0
+        },
+        {
+          "name": "unit",
+          "blank": 0,
+          "text": 7,
+          "finite": 0,
+          "nonfinite": 0
+        }
+      ]
+    },
+    {
+      "path": "figures/model_comparison.csv",
+      "label": "Model comparison",
+      "role": "Tables and numerical results",
+      "rows": 13,
+      "width_mismatches": 0,
+      "columns": [
+        {
+          "name": "model",
+          "blank": 0,
+          "text": 13,
+          "finite": 0,
+          "nonfinite": 0
+        },
+        {
+          "name": "fixed_chi2",
+          "blank": 0,
+          "text": 0,
+          "finite": 13,
+          "nonfinite": 0,
+          "minimum": 53.00760722074134,
+          "maximum": 11541.077727842912
+        },
+        {
+          "name": "fixed_dof",
+          "blank": 0,
+          "text": 0,
+          "finite": 13,
+          "nonfinite": 0,
+          "minimum": 56.0,
+          "maximum": 56.0
+        },
+        {
+          "name": "fixed_reduced_chi2",
+          "blank": 0,
+          "text": 0,
+          "finite": 13,
+          "nonfinite": 0,
+          "minimum": 0.9465644146560954,
+          "maximum": 206.09067371148058
+        },
+        {
+          "name": "fixed_p_value",
+          "blank": 0,
+          "text": 0,
+          "finite": 13,
+          "nonfinite": 0,
+          "minimum": 0.0,
+          "maximum": 0.5888635419564702
+        },
+        {
+          "name": "offset",
+          "blank": 0,
+          "text": 0,
+          "finite": 13,
+          "nonfinite": 0,
+          "minimum": -0.0001909018005183625,
+          "maximum": 3.7292520657061346e-06
+        },
+        {
+          "name": "offset_error",
+          "blank": 0,
+          "text": 0,
+          "finite": 13,
+          "nonfinite": 0,
+          "minimum": 4.321995311377846e-06,
+          "maximum": 4.321995311377846e-06
+        },
+        {
+          "name": "shape_chi2",
+          "blank": 0,
+          "text": 0,
+          "finite": 13,
+          "nonfinite": 0,
+          "minimum": 51.86741168829374,
+          "maximum": 9590.103797499178
+        },
+        {
+          "name": "shape_dof",
+          "blank": 0,
+          "text": 0,
+          "finite": 13,
+          "nonfinite": 0,
+          "minimum": 55.0,
+          "maximum": 55.0
+        },
+        {
+          "name": "shape_reduced_chi2",
+          "blank": 0,
+          "text": 0,
+          "finite": 13,
+          "nonfinite": 0,
+          "minimum": 0.943043848878068,
+          "maximum": 174.36552359089413
+        },
+        {
+          "name": "shape_p_value",
+          "blank": 0,
+          "text": 0,
+          "finite": 13,
+          "nonfinite": 0,
+          "minimum": 0.0,
+          "maximum": 0.5950761799479918
+        }
+      ]
+    },
+    {
+      "path": "figures/pipeline_comparison.csv",
+      "label": "Pipeline comparison",
+      "role": "Tables and numerical results",
+      "rows": 3,
+      "width_mismatches": 0,
+      "columns": [
+        {
+          "name": "pipeline",
+          "blank": 0,
+          "text": 3,
+          "finite": 0,
+          "nonfinite": 0
+        },
+        {
+          "name": "n_bins",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 55.0,
+          "maximum": 56.0
+        },
+        {
+          "name": "mean_depth",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 0.0010025099925643805,
+          "maximum": 0.0010619764317453602
+        },
+        {
+          "name": "median_formal_error",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 2.3234101561514422e-05,
+          "maximum": 3.322287845961553e-05
+        },
+        {
+          "name": "flat_chi2",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 49.803596941325054,
+          "maximum": 227.83452703935382
+        },
+        {
+          "name": "flat_dof",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 54.0,
+          "maximum": 55.0
+        },
+        {
+          "name": "flat_reduced_chi2",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 0.9055199443877282,
+          "maximum": 4.219157908136181
+        },
+        {
+          "name": "lr_shape_offset",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 1.4687025627509675e-06,
+          "maximum": 5.5550153806067114e-05
+        },
+        {
+          "name": "lr_shape_offset_error",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 5.343379804896261e-06,
+          "maximum": 6.098649840163267e-06
+        },
+        {
+          "name": "lr_shape_chi2",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 0.9942633090859625,
+          "maximum": 104.5983695029885
+        },
+        {
+          "name": "lr_shape_dof",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 54.0,
+          "maximum": 55.0
+        },
+        {
+          "name": "lr_shape_reduced_chi2",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 0.018077514710653865,
+          "maximum": 1.9370068426479352
+        },
+        {
+          "name": "lr_shape_p_value",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 4.4299684747335606e-05,
+          "maximum": 1.0
+        },
+        {
+          "name": "lr_shape_residual_rms",
+          "blank": 0,
+          "text": 0,
+          "finite": 3,
+          "nonfinite": 0,
+          "minimum": 9.362833583190761e-06,
+          "maximum": 9.45649924803163e-05
+        }
+      ]
+    }
+  ],
+  "excluded": []
+}

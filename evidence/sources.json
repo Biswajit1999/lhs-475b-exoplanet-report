@@ -1,0 +1,66 @@
+{
+  "project": "LHS 475 b — JWST atmosphere constraints",
+  "repository": "https://github.com/Biswajit1999/lhs-475b-exoplanet-report",
+  "files": [
+    {
+      "label": "Data source notes",
+      "path": "data/SOURCE.md",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Nirspec transmission spectrum LR",
+      "path": "data/nirspec_transmission_spectrum_LR.txt",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Transit spectrum HR eureka ecsv",
+      "path": "data/pipeline_spectra/transit_spectrum_HR_eureka_ecsv.txt",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Transit spectrum HR firefly ecsv",
+      "path": "data/pipeline_spectra/transit_spectrum_HR_firefly_ecsv.txt",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Transit spectrum HR tiberius ecsv",
+      "path": "data/pipeline_spectra/transit_spectrum_HR_tiberius_ecsv.txt",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Model 1x solar hydrogen rich",
+      "path": "data/model_1x_solar_hydrogen_rich.txt",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Model clear venuslike",
+      "path": "data/model_clear_venuslike.txt",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Analysis summary",
+      "path": "figures/analysis_summary.json",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Summary statistics",
+      "path": "figures/summary_statistics.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Model comparison",
+      "path": "figures/model_comparison.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Pipeline comparison",
+      "path": "figures/pipeline_comparison.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Lhs475b transmission spectrum",
+      "path": "figures/lhs475b_transmission_spectrum.png",
+      "role": "Figures"
+    }
+  ]
+}

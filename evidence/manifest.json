@@ -1,0 +1,246 @@
+{
+  "schema": 1,
+  "project": "LHS 475 b — JWST atmosphere constraints",
+  "repository": "https://github.com/Biswajit1999/lhs-475b-exoplanet-report",
+  "files": [
+    {
+      "label": "Data source notes",
+      "path": "data/SOURCE.md",
+      "role": "Data and provenance",
+      "bytes": 1252,
+      "sha256": "c2169052c0424a2444d28dfdbb608de3273955a513efb4b3b5def0e11f693a1e",
+      "hash_basis": "LF-normalised text",
+      "format": "MD"
+    },
+    {
+      "label": "Nirspec transmission spectrum LR",
+      "path": "data/nirspec_transmission_spectrum_LR.txt",
+      "role": "Data and provenance",
+      "bytes": 4652,
+      "sha256": "1018a6944f71c1756c8148a467ce9857eb4451c6b5ba6a23cd1315af50caa07d",
+      "hash_basis": "LF-normalised text",
+      "format": "TXT"
+    },
+    {
+      "label": "Transit spectrum HR eureka ecsv",
+      "path": "data/pipeline_spectra/transit_spectrum_HR_eureka_ecsv.txt",
+      "role": "Data and provenance",
+      "bytes": 232242,
+      "sha256": "11157c4333b28602b7c8858c14fcae17df66688cb6857d65b86996b3cea4d239",
+      "hash_basis": "LF-normalised text",
+      "format": "TXT"
+    },
+    {
+      "label": "Transit spectrum HR firefly ecsv",
+      "path": "data/pipeline_spectra/transit_spectrum_HR_firefly_ecsv.txt",
+      "role": "Data and provenance",
+      "bytes": 258115,
+      "sha256": "4baf2964d9bc9a8b31cd18649c3d4f3a4787e6b4c9be32ca2e9fecb6d8e0f5d1",
+      "hash_basis": "LF-normalised text",
+      "format": "TXT"
+    },
+    {
+      "label": "Transit spectrum HR tiberius ecsv",
+      "path": "data/pipeline_spectra/transit_spectrum_HR_tiberius_ecsv.txt",
+      "role": "Data and provenance",
+      "bytes": 136481,
+      "sha256": "8a991324e527400f0692bbec4e2ba16b4250bd8917e635c7cc24ba63de29db5b",
+      "hash_basis": "LF-normalised text",
+      "format": "TXT"
+    },
+    {
+      "label": "Model 1x solar hydrogen rich",
+      "path": "data/model_1x_solar_hydrogen_rich.txt",
+      "role": "Data and provenance",
+      "bytes": 2796,
+      "sha256": "b35a3150e8c2c6aa51234e3c9575b9c1fc0f0c6a9419603721843bc2816ad959",
+      "hash_basis": "LF-normalised text",
+      "format": "TXT"
+    },
+    {
+      "label": "Model clear venuslike",
+      "path": "data/model_clear_venuslike.txt",
+      "role": "Data and provenance",
+      "bytes": 2823,
+      "sha256": "7132cd40cfafbc81170d216690df62366419c185d3a40f0127e26c9f988718a2",
+      "hash_basis": "LF-normalised text",
+      "format": "TXT"
+    },
+    {
+      "label": "Analysis summary",
+      "path": "figures/analysis_summary.json",
+      "role": "Tables and numerical results",
+      "bytes": 8075,
+      "sha256": "145c578d2cd0991769941e226274f5ea61e6ea790c5ca5841f8b83753abdb74e",
+      "hash_basis": "LF-normalised text",
+      "format": "JSON",
+      "keys": [
+        "source",
+        "units",
+        "n_lr_points",
+        "flat_fit",
+        "model_count",
+        "model_estimands",
+        "pipeline_note"
+      ],
+      "arrays": {
+        "models": 13,
+        "pipelines": 3
+      }
+    },
+    {
+      "label": "Summary statistics",
+      "path": "figures/summary_statistics.csv",
+      "role": "Tables and numerical results",
+      "bytes": 476,
+      "sha256": "69ef0e06216a73d148770316463136b6e3a88f3528e2e502c2a194160d5ee9d3",
+      "hash_basis": "LF-normalised text",
+      "format": "CSV",
+      "rows": 7,
+      "columns": 3,
+      "headers": [
+        "quantity",
+        "value",
+        "unit"
+      ],
+      "preview": [
+        [
+          "n_wavelength_points",
+          "56",
+          "count"
+        ],
+        [
+          "flat_line_level",
+          "0.001063407848942883",
+          "fractional/chi-square as applicable"
+        ],
+        [
+          "flat_line_level_error",
+          "4.321995311377846e-06",
+          "fractional/chi-square as applicable"
+        ],
+        [
+          "flat_line_chi2",
+          "50.700149631285626",
+          "fractional/chi-square as applicable"
+        ]
+      ]
+    },
+    {
+      "label": "Model comparison",
+      "path": "figures/model_comparison.csv",
+      "role": "Tables and numerical results",
+      "bytes": 2419,
+      "sha256": "9fc25de317263de2e4d97a2f0f909fd67d3d77db4f1be2a503e4a854217fe236",
+      "hash_basis": "LF-normalised text",
+      "format": "CSV",
+      "rows": 13,
+      "columns": 11,
+      "headers": [
+        "model",
+        "fixed_chi2",
+        "fixed_dof",
+        "fixed_reduced_chi2",
+        "fixed_p_value",
+        "offset",
+        "offset_error"
+      ],
+      "preview": [
+        [
+          "1000× solar H₂-rich",
+          "83.48361065777233",
+          "56",
+          "1.4907787617459345",
+          "0.010057880006844388",
+          "-3.297319354668156e-06",
+          "4.321995311377846e-06"
+        ],
+        [
+          "100× solar H₂-rich",
+          "498.5378167998109",
+          "56",
+          "8.902461014282338",
+          "2.927515919294496e-72",
+          "-3.157563787559681e-05",
+          "4.321995311377846e-06"
+        ],
+        [
+          "10× solar H₂-rich",
+          "8942.198946574466",
+          "56",
+          "159.6821240459726",
+          "0.0",
+          "-0.00016944444486112243",
+          "4.321995311377846e-06"
+        ],
+        [
+          "1× solar H₂-rich",
+          "11541.077727842912",
+          "56",
+          "206.09067371148058",
+          "0.0",
+          "-0.0001909018005183625",
+          "4.321995311377846e-06"
+        ]
+      ]
+    },
+    {
+      "label": "Pipeline comparison",
+      "path": "figures/pipeline_comparison.csv",
+      "role": "Tables and numerical results",
+      "bytes": 868,
+      "sha256": "a13cd34ca133d2d833e9a3612f9394bbd1f0f93490e537ba7f28e9ea5fd14d28",
+      "hash_basis": "LF-normalised text",
+      "format": "CSV",
+      "rows": 3,
+      "columns": 14,
+      "headers": [
+        "pipeline",
+        "n_bins",
+        "mean_depth",
+        "median_formal_error",
+        "flat_chi2",
+        "flat_dof",
+        "flat_reduced_chi2"
+      ],
+      "preview": [
+        [
+          "Eureka",
+          "55",
+          "0.0010025099925643805",
+          "3.120334288398717e-05",
+          "227.83452703935382",
+          "54",
+          "4.219157908136181"
+        ],
+        [
+          "Firefly",
+          "56",
+          "0.0010619764317453602",
+          "3.322287845961553e-05",
+          "49.803596941325054",
+          "55",
+          "0.9055199443877282"
+        ],
+        [
+          "Tiberius",
+          "56",
+          "0.0010265075042469876",
+          "2.3234101561514422e-05",
+          "151.54039343573567",
+          "55",
+          "2.755279880649739"
+        ]
+      ]
+    },
+    {
+      "label": "Lhs475b transmission spectrum",
+      "path": "figures/lhs475b_transmission_spectrum.png",
+      "role": "Figures",
+      "bytes": 337177,
+      "sha256": "e5fa4cf539111ad23612572c0c75e39b1e8e1564a10d6176c4a47cef72b0ceb4",
+      "hash_basis": "exact bytes",
+      "format": "PNG"
+    }
+  ]
+}

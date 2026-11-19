@@ -8,6 +8,12 @@ uses the complete public Zenodo model set and three independently developed
 reductions of the same two NIRSpec/G395H transits. The published paper remains
 the authoritative scientific interpretation.
 
+## Research evidence and downloads
+
+[Open the evidence browser](https://biswajit1999.github.io/lhs-475b-exoplanet-report/evidence.html) for 12 selected files, including [`analysis_summary.json`](figures/analysis_summary.json). Each file has a download link and SHA-256 digest.
+
+Rebuild the inventory and browser with `python scripts/evidence_catalog.py` and `python scripts/render_evidence_page.py`.
+
 ## Scientific question
 
 Which broad classes of atmosphere are incompatible with the observed spectral

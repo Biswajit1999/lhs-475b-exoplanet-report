@@ -4,6 +4,7 @@ import argparse
 import html
 import json
 import subprocess
+from hashlib import sha256
 from pathlib import Path
 from urllib.parse import quote
 
@@ -29,7 +30,7 @@ def preview(item):
         rows.append(f"<tr>{cells}</tr>")
     return (
         "<details><summary>Preview the first records</summary>"
-        '<div class="table-scroll"><table aria-label="First records from this file">'
+        '<div class="table-scroll" tabindex="0" role="region" aria-label="Table preview"><table aria-label="First records from this file">'
         f"<thead><tr>{headers}</tr></thead><tbody>{''.join(rows)}</tbody></table></div>"
         "</details>"
     )
@@ -48,6 +49,10 @@ def facts(item):
     return " · ".join(values)
 
 
+def file_id(path):
+    return "file-" + sha256(path.encode("utf-8")).hexdigest()[:16]
+
+
 def card(item):
     target = quote(item["path"], safe="/")
     name = escape(item["label"])
@@ -58,7 +63,9 @@ def card(item):
         f'<details><summary>SHA-256, {escape(item["hash_basis"])}</summary>'
         f'<code>{escape(item["sha256"])}</code></details>'
     )
-    return f'<article>{heading}{meta}{preview(item)}<p>{links}</p>{digest}</article>'
+    permalink = f'<a href="#{file_id(item["path"])}" aria-label="Link to {name}">Permalink</a>'
+    return (f'<article id="{file_id(item["path"])}">{heading}{meta}{preview(item)}'
+            f'<p>{links} · {permalink}</p>{digest}</article>')
 
 
 STYLES = """
@@ -76,7 +83,10 @@ figcaption{margin-top:.6rem;color:#3b5362}.meta{color:#3b5362;font-size:.9rem}
 details{margin:.55rem 0}summary{cursor:pointer}code{overflow-wrap:anywhere}
 .table-scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:.85rem}
 th,td{text-align:left;vertical-align:top;padding:.4rem;border-bottom:1px solid #dce3e7}
-a:focus-visible,summary:focus-visible{outline:2px solid #7b4107;outline-offset:3px}
+.index ul{display:flex;flex-wrap:wrap;gap:.5rem 1.25rem;margin:1rem 0 0;padding:0;list-style:none}
+.skip{position:absolute;top:0;left:.5rem;background:#fff;padding:.7rem;transform:translateY(-120%)}
+.skip:focus{transform:none;z-index:1}article:target{outline:3px solid #44687d;scroll-margin-top:1rem}
+.table-scroll:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #7b4107;outline-offset:3px}
 """
 
 
@@ -85,11 +95,14 @@ def render(manifest):
     repository = escape(manifest["repository"])
     files = manifest["files"]
     groups = []
+    index = []
     for role in ("Data and provenance", "Tables and numerical results", "Figures"):
         selected = [item for item in files if item["role"] == role]
         if selected:
             entries = "".join(card(item) for item in selected)
-            groups.append(f'<section><h2>{escape(role)}</h2><div class="grid">{entries}</div></section>')
+            anchor = "group-" + role.lower().replace(" ", "-")
+            index.append(f'<li><a href="#{anchor}">{escape(role)} ({len(selected)})</a></li>')
+            groups.append(f'<section id="{anchor}"><h2>{escape(role)}</h2><div class="grid">{entries}</div></section>')
     figures = []
     for item in files:
         if item["role"] == "Figures" and item["bytes"] <= 600_000 and len(figures) < 2:
@@ -99,7 +112,10 @@ def render(manifest):
                 f'<figure><a href="{url}"><img src="{url}" loading="lazy" alt="{label}"></a>'
                 f'<figcaption>{label}. Open the image for the full-resolution file.</figcaption></figure>'
             )
-    lead = "<section><h2>Selected figures</h2>" + "".join(figures) + "</section>" if figures else ""
+    lead = "<section id=\"selected-figures\"><h2>Selected figures</h2>" + "".join(figures) + "</section>" if figures else ""
+    if figures:
+        index.insert(0, '<li><a href="#selected-figures">Selected figures</a></li>')
+    jump = '<nav aria-label="On this page" class="index"><ul>' + "".join(index) + '</ul></nav>'
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -109,14 +125,18 @@ def render(manifest):
 <style>{STYLES}</style>
 </head>
 <body>
+<a class="skip" href="#evidence-content">Skip to file list</a>
 <main>
 <header>
 <nav aria-label="Evidence links"><a href="{repository}#readme">Methods and references</a><a href="{MANIFEST}" download>Download the file inventory</a></nav>
 <h1>{title}</h1>
 <p>Browse {len(files)} versioned evidence files. Table previews simply display stored rows. Consult the project report for the source, processing steps, and inference assumptions.</p>
 </header>
+<div id="evidence-content">
+{jump}
 {lead}
 {''.join(groups)}
+</div>
 <p class="scope">SHA-256 values verify the stored files. They do not independently validate the scientific analysis. Rebuild this page with <code>python scripts/evidence_catalog.py</code> followed by <code>python scripts/render_evidence_page.py</code>.</p>
 </main>
 </body>
